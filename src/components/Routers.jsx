@@ -1,15 +1,16 @@
 import React from 'react'
 
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import Customer from '../pages/Customer';
 import Dashboard from '../pages/Dashboard';
 
 
 const Routers = () => {
     return (
-        <>
+        <Routes>
             <Route path='/' element={<Dashboard/>} />
-            <Route path='/customer' element={<Customer/>} />
-        </>
+            <Route path='/customers' element={<Customer/>} />
+        </Routes>
     )
 }
 

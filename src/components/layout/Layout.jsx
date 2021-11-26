@@ -1,10 +1,10 @@
 import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Dashboard from '../../pages/Dashboard'
-import Customer from '../../pages/Customer'
 
 import Routers from '../Routers'
+import TopNav from '../topnav/TopNav'
 import SideBar from '../sidebar/SideBar'
+
+import './styles.scss'
 
 function Layout() {
     return (
@@ -12,11 +12,9 @@ function Layout() {
             <div className='layout'>
                 <SideBar />
                 <div className='layout__content'>
+                    <TopNav />
                     <div className='layout__content-main'>
-                        <Routes>    
-                            <Route path='/' element={<Dashboard/>} />
-                            <Route path='/customer' element={<Customer/>} />
-                        </Routes>
+                        <Routers />
                     </div>
                 </div>
             </div>

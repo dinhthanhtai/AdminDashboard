@@ -1,0 +1,15 @@
+.layout {
+    color: var(--txt-color);
+
+    &__content {
+        padding-left: var(--sidebar-width);
+        background-color: var(--second-bg);
+        min-height: 100vh;
+
+        &-main {
+            padding: 30px;
+        }
+    }
+
+
+}
