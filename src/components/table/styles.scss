@@ -26,3 +26,38 @@
     }
 }
 
+.table__pagination {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    // &-item:not(:first-child) {
+    //     margin-left: 10px;
+    // }
+
+    &-item {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &.active, &.active:hover {
+            background-color: var(--main-color);
+            color: var(--txt-white);
+            font-weight: 600;
+        }
+    
+        &:hover {
+            color: var(--txt-white);
+            background-color: var(--second-color);
+        }
+    }
+
+   
+}
+

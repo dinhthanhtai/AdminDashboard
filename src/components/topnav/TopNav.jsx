@@ -6,9 +6,10 @@ import './styles.scss';
 
 import notifications from './../../assets/JsonData/notification.json';
 
-import user_image from '../../assets/images/tuat.png';
+import user_image from '../../assets/images/cutaine.jpg';
 
 import user_menu from '../../assets/JsonData/user_menus.json';
+import ThemeMenu from '../thememenu/ThemeMenu';
 
 const curr_user = {
     display_name: 'Thanh Tai',
@@ -70,7 +71,10 @@ const TopNav = () => {
                         renderFooter={() => <Link to='/'> View All </Link>}
                     />
                 </div>
-               
+                <div className='topNav__right-item'>
+                    <ThemeMenu
+                    />
+                </div>
             </div>
         </div>
     )
