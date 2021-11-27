@@ -36,7 +36,7 @@ const Customer = () => {
         const valueSearch = searchParams.get('filter');
         if (valueSearch !== null) {
             setTimeout(() => {
-                const newArr = state.filter(item => item.name.includes(valueSearch));
+                const newArr = state.filter(item => item.name.toLowerCase().includes(valueSearch.toLowerCase()));
                 setState(newArr);
             }, 1000)
         }
