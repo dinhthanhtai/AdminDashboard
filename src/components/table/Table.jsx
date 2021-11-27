@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './styles.scss';
 
 const Table = (props) => {
     const { headData, renderBody, renderHead, bodyData, limit} = props;
 
-    const initDataShow = limit && bodyData ? bodyData.slice(0, +limit) : bodyData;
-
-    const [dataShow, setDataShow] = useState(initDataShow);
+    const [dataShow, setDataShow] = useState([]);
     const [currPage, setCurrPage] = useState(0);
 
     let pages = 1
@@ -19,6 +17,11 @@ const Table = (props) => {
         pages = bodyData.length % +limit === 0 ? page : page + 1;
         range = [...Array(pages).keys()]
     }
+
+    useEffect(() => {
+        const initDataShow = limit && bodyData ? bodyData.slice(0, +limit) : bodyData;
+        setDataShow(initDataShow)
+    }, [bodyData])
 
     const handleChangePage = (page) => {
         const start = +limit * page;

@@ -10,6 +10,14 @@ const Routers = () => {
         <Routes>
             <Route path='/' element={<Dashboard/>} />
             <Route path='/customers' element={<Customer/>} />
+            <Route
+                path="*"
+                element={
+                    <main style={{ padding: "1rem" }}>
+                    <p>Pending development ... </p>
+                    </main>
+                }
+            />
         </Routes>
     )
 }

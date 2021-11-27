@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import Table from '../components/table/Table'
 import customerList from '../assets/JsonData/customers-list.json';
@@ -27,7 +28,25 @@ const renderBody = (item, index) => (
     </tr>
 )
 
-const Customer = () => {
+const Customer = () => {   
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [state, setState] = useState(customerList);
+
+    useEffect(() => {
+        const valueSearch = searchParams.get('filter');
+        if (valueSearch !== null) {
+            setTimeout(() => {
+                const newArr = state.filter(item => item.name.includes(valueSearch));
+                setState(newArr);
+            }, 1000)
+        }
+
+        return function cleanup() {
+            setState(customerList);
+        }
+
+    }, [searchParams.get('filter')])
+
     return (
         <div>
             <h2 className='page-header'>
@@ -41,7 +60,7 @@ const Customer = () => {
                                 limit='10'
                                 headData={customerTableHead}
                                 renderHead={renderHead}
-                                bodyData={customerList}
+                                bodyData={state}
                                 renderBody={renderBody}
                             /> 
                         </div>
