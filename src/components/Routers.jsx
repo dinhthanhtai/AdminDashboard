@@ -8,7 +8,7 @@ import Dashboard from '../pages/Dashboard';
 const Routers = () => {
     return (
         <Routes>
-            <Route path='/' element={<Dashboard/>} />
+            <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path='/customers' element={<Customer/>} />
             <Route
                 path="*"

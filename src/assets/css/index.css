@@ -1,4 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
     --main-bg: #ffffff;
@@ -151,3 +154,12 @@ input:focus {
     background-color: var(--main-color-orange);
     color: #fff;
 }
+
+.bg-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 97, 215, 1) 0%,
+      rgba(0, 200, 255, 1) 100%
+    );
+  }
+  

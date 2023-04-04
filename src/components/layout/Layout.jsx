@@ -1,31 +1,33 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'  
 
+import { Outlet } from 'react-router-dom'
+
 import Routers from '../Routers'
 import TopNav from '../topnav/TopNav'
 import SideBar from '../sidebar/SideBar'
 
 import './styles.scss';
 
-import ThemeAction from '../../redux/actions/ThemeAction';
+import { setMode, setColor } from '../../features/theme/themeSlice'
 
 function Layout() {
 
-    const themeReducer = useSelector(state => state);
+    const themeReducer = useSelector(state => state.theme);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const themeClass = localStorage.getItem('themeMode')
         const colorClass = localStorage.getItem('colorMode')
 
-        dispatch(ThemeAction.setMode(themeClass))
+        dispatch(setMode(themeClass))
 
-        dispatch(ThemeAction.setColor(colorClass))
+        dispatch(setColor(colorClass))
 
     }, [dispatch])
 
     return (
-        <>
+        <>  
             <div className={`layout ${themeReducer?.mode} ${themeReducer?.color}`}>
                 <SideBar />
                 <div className='layout__content'>

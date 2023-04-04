@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 
 import { useDispatch } from 'react-redux';
-
-import ThemeAction from '../../redux/actions/ThemeAction';
+import { setMode, setColor } from '../../features/theme/themeSlice';
 
 import { mode_settings, color_settings } from '../../assets/mockdata/mock-charts'
 
@@ -37,16 +36,16 @@ const ThemeMenu = () => {
 
     const dispatch = useDispatch();
 
-    const setMode = (mode) => {
+    const setModeTheme = (mode) => {
         setcurrMode(mode.id)
         localStorage.setItem('themeMode', mode.class)
-        dispatch(ThemeAction.setMode(mode.class));
+        dispatch(setMode(mode.class));
     }
 
-    const setColor = (color) => {
+    const setColorTheme = (color) => {
         setcurrColor(color.id)
         localStorage.setItem('colorMode', color.class);
-        dispatch(ThemeAction.setColor(color.class));
+        dispatch(setColor(color.class));
     }
 
     useEffect(() => {
@@ -84,7 +83,7 @@ const ThemeMenu = () => {
                             mode_settings.map((item, index) => (
                                 <li 
                                     key={index} 
-                                    onClick={() => setMode(item)}
+                                    onClick={() => setModeTheme(item)}
                                 >
                                     <div 
                                         className={`mode-list__color ${item.background} ${item.id === currMode && 'active'}`}
@@ -104,7 +103,7 @@ const ThemeMenu = () => {
                             color_settings.map((item, index) => (
                                 <li 
                                     key={index}
-                                    onClick={() => setColor(item)}
+                                    onClick={() => setColorTheme(item)}
                                 >
                                     <div 
                                         className={`mode-list__color ${item.background} ${item.id === currColor && 'active'}`}
