@@ -1,24 +1,27 @@
-import React from 'react'
-
-import { Route, Routes } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Customer from '../pages/Customer';
 import Dashboard from '../pages/Dashboard';
 
+const pendingDevelop = ['/products', '/orders', '/analytics', '/categories', '/discount', '/inventory', '/settings'];
 
 const Routers = () => {
     return (
-        <Routes>
+        <>
             <Route path='/dashboard' element={<Dashboard/>}/>
             <Route path='/customers' element={<Customer/>} />
-            <Route
-                path="*"
-                element={
-                    <main style={{ padding: "1rem" }}>
-                    <p>Pending development ... </p>
-                    </main>
-                }
-            />
-        </Routes>
+            {
+                pendingDevelop.map(route => (
+                    <Route
+                        path={route}
+                        element={
+                            <main style={{ padding: "1rem" }}>
+                            <p>Pending development ... </p>
+                            </main>
+                        }
+                    />
+                ))
+            }
+        </>
     )
 }
 

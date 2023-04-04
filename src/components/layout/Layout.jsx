@@ -11,8 +11,7 @@ import './styles.scss';
 
 import { setMode, setColor } from '../../features/theme/themeSlice'
 
-function Layout() {
-
+function Layout({ children }) {
     const themeReducer = useSelector(state => state.theme);
     const dispatch = useDispatch();
 
@@ -33,7 +32,8 @@ function Layout() {
                 <div className='layout__content'>
                     <TopNav />
                     <div className='layout__content-main'>
-                        <Routers />
+                        <Outlet/>
+                        {children}
                     </div>
                 </div>
             </div>

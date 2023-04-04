@@ -15,6 +15,7 @@ import './assets/css/grid.css';
 import './assets/css/theme.css';
 import './assets/css/index.css';
 import './tailwind.css';
+import Routers from './components/Routers';
 
 
 
@@ -26,6 +27,9 @@ ReactDOM.render(
           <Route path='/' element={<Home/>}/>
           <Route path='/signup' element={<SignUp />}/>
           <Route path='/login' element={<Login />}/>
+          <Route element={<Layout />}>
+            {Routers()}
+          </Route>
           <Route
                 path="*"
                 element={
