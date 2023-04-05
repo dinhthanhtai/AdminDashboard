@@ -9,10 +9,9 @@
     background-color: var(--main-bg);
     box-shadow: var(--box-shadow);
     transition: right 0.5s linear;
-    
 
     &.active {
-        right: 0 ;
+        right: 0;
     }
 
     &__close {
@@ -23,12 +22,12 @@
         font-size: 1.5rem;
     }
 
-    &__select { 
+    &__select {
         margin-bottom: 40px;
 
         .mode-list {
             margin-top: 20px;
-            
+
             & > li {
                 display: flex;
                 align-items: center;
@@ -37,7 +36,6 @@
 
             & > li ~ li {
                 margin-top: 10px;
-
             }
 
             &__color {
@@ -57,7 +55,7 @@
 
                 &.active > i {
                     transform: scale(1);
-                } 
+                }
             }
         }
     }

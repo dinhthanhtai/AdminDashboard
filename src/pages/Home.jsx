@@ -1,11 +1,13 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/favicon.png';
 import GradientBar from '../components/button/GradientBar';
 import GradientLink from '../components/button/GradientLink';
+import { AuthContext } from '../context/AuthContext';
 
 const Home = () => {
-//   const auth = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   return (
     <>

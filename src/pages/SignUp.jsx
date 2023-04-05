@@ -1,36 +1,58 @@
-import React, { useState } from "react";
-import { Form, Formik } from 'formik';
-import * as Yup from 'yup';
+import React, { useContext, useState } from "react";
+import { Form, Formik } from "formik";
+import { Navigate } from "react-router-dom";
+import * as Yup from "yup";
 import GradientBar from "../components/button/GradientBar";
-import GradientButton from '../components/button/GradientButton'
-import Card from '../components/card/Card';
-import Hyperlink from '../components/hyperlink/HyperLink';
+import GradientButton from "../components/button/GradientButton";
+import Card from "../components/card/Card";
+import Hyperlink from "../components/hyperlink/HyperLink";
 import FormSuccess from "../components/form/FormSuccess";
 import FormError from "../components/form/FormError";
-import Label from '../components/label/Label';
-import FormInput from '../components/form/FormInput';
-import logo from '../assets/images/favicon.png';
+import Label from "../components/label/Label";
+import FormInput from "../components/form/FormInput";
+import logo from "../assets/images/favicon.png";
+import { AuthContext } from "../context/AuthContext";
+import { publicFetch } from "../utils/fetch";
 
 const SignUpSchema = Yup.object().shape({
-	firstName: Yup.string().required(
-		'First name is required'
-	),
-	lastName: Yup.string().required('Last name is require'),
-	email: Yup.string()
-		.email('Invalid email')
-		.required('Email is required'),
-	password: Yup.string().required('Password is required')
-})
+	firstName: Yup.string().required("First name is required"),
+	lastName: Yup.string().required("Last name is require"),
+	email: Yup.string().email("Invalid email").required("Email is required"),
+	password: Yup.string().required("Password is required")
+});
 
 const SignUp = () => {
+	const authContext = useContext(AuthContext);
+
 	const [signupSuccess, setSignupSuccess] = useState();
-  const [signupError, setSignupError] = useState();
-  const [redirectOnLogin, setRedirectOnLogin] = useState(false);
-  const [loginLoading, setLoginLoading] = useState(false);
+	const [signupError, setSignupError] = useState();
+	const [redirectOnLogin, setRedirectOnLogin] = useState(false);
+	const [loginLoading, setLoginLoading] = useState(false);
+
+	const submitCredentials = async (credentials) => {
+		try {
+			setLoginLoading(true);
+			const { data } = await publicFetch.post(`signup`, credentials);
+
+			authContext.setAuthState(data);
+			setSignupSuccess(data.message);
+			setSignupError("");
+
+			setTimeout(() => {
+				setRedirectOnLogin(true);
+			}, 700);
+		} catch (error) {
+			console.log(error);
+			setLoginLoading(false);
+			const { data } = error.response;
+			setSignupError(data.message);
+			setSignupSuccess("");
+		}
+	};
 
 	return (
 		<>
-			{redirectOnLogin && <Redirect to="/dashboard" />}
+			{redirectOnLogin && <Navigate to='/dashboard' replace={true} />}
 			<section className='w-full sm:w-1/2 h-screen m-auto p-8 sm:pt-10'>
 				<GradientBar />
 				<Card>
@@ -55,7 +77,7 @@ const SignUp = () => {
 									email: "",
 									password: ""
 								}}
-								// onSubmit={(values) => submitCredentials(values)}
+								onSubmit={(values) => submitCredentials(values)}
 								validationSchema={SignUpSchema}
 							>
 								{() => (

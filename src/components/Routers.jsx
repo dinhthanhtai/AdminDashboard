@@ -12,6 +12,7 @@ const Routers = () => {
             {
                 pendingDevelop.map(route => (
                     <Route
+                        key={route}
                         path={route}
                         element={
                             <main style={{ padding: "1rem" }}>
