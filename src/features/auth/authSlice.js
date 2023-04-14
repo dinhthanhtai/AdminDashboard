@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-	token,
-	expiresAt,
-	userInfo: userInfo ? JSON.parse(userInfo) : {}
+	token: "",
+	expiresAt: null,
+	userInfo: {}
 };
 
 export const authSlice = createSlice({
@@ -11,18 +11,33 @@ export const authSlice = createSlice({
 	initialState,
 	reducers: {
 		setAuthInfo: (state, action) => {
-			const { token, userInfo, expiresAt } = action;
+			const { token, userInfo, expiresAt } = action.payload;
 
-			localStorage.setItem("token", token);
-			localStorage.setItem("userInfo", JSON.stringify(userInfo));
-			localStorage.setItem("expiresAt", expiresAt);
+			if (action.payload) {
+				localStorage.setItem("token", token);
+				localStorage.setItem("userInfo", JSON.stringify(userInfo));
+				localStorage.setItem("expiresAt", expiresAt);
+			}
 
 			return {
-				...state,
 				token,
-				userInfo,
-				expiresAt
+				expiresAt,
+				userInfo
 			};
+		},
+		logOut: (state) => {
+			state.auth = {};
 		}
 	}
 });
+
+export const { setAuthInfo, logOut } = authSlice.actions;
+export default authSlice.reducer;
+
+export const selectCurrentUser = (state) => state.auth.userInfo;
+export const selectCurrentToken = (state) => state.auth.token;
+export const authenticated = (state) => {
+	if (!state.auth.expiresAt) return false;
+
+	return new Date() < new Date(state.auth.expiresAt);
+};

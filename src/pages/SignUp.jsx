@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
 import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import GradientBar from "../components/button/GradientBar";
 import GradientButton from "../components/button/GradientButton";
@@ -11,8 +12,8 @@ import FormError from "../components/form/FormError";
 import Label from "../components/label/Label";
 import FormInput from "../components/form/FormInput";
 import logo from "../assets/images/favicon.png";
-import { AuthContext } from "../context/AuthContext";
-import { publicFetch } from "../utils/fetch";
+import { useSignupMutation } from "../app/api/apiSlice";
+import { setAuthInfo } from "../features/auth/authSlice";
 
 const SignUpSchema = Yup.object().shape({
 	firstName: Yup.string().required("First name is required"),
@@ -22,31 +23,23 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
-	const authContext = useContext(AuthContext);
+	const dispatch = useDispatch();
+	const [signup, { isLoading, isError, error, data, isSuccess }] =
+		useSignupMutation();
 
-	const [signupSuccess, setSignupSuccess] = useState();
-	const [signupError, setSignupError] = useState();
 	const [redirectOnLogin, setRedirectOnLogin] = useState(false);
-	const [loginLoading, setLoginLoading] = useState(false);
 
 	const submitCredentials = async (credentials) => {
 		try {
-			setLoginLoading(true);
-			const { data } = await publicFetch.post(`signup`, credentials);
+			const data = await signup({ ...credentials }).unwrap();
 
-			authContext.setAuthState(data);
-			setSignupSuccess(data.message);
-			setSignupError("");
+			dispatch(setAuthInfo(data));
 
 			setTimeout(() => {
 				setRedirectOnLogin(true);
 			}, 700);
 		} catch (error) {
 			console.log(error);
-			setLoginLoading(false);
-			const { data } = error.response;
-			setSignupError(data.message);
-			setSignupSuccess("");
 		}
 	};
 
@@ -82,8 +75,8 @@ const SignUp = () => {
 							>
 								{() => (
 									<Form className='mt-8'>
-										{signupSuccess && <FormSuccess text={signupSuccess} />}
-										{signupError && <FormError text={signupError} />}
+										{isSuccess && <FormSuccess text={data?.message} />}
+										{isError && <FormError text={error?.data?.message} />}
 										<input type='hidden' name='remember' value='true' />
 										<div>
 											<div className='flex'>
@@ -138,7 +131,7 @@ const SignUp = () => {
 											<GradientButton
 												type='submit'
 												text='Sign Up'
-												loading={loginLoading}
+												loading={isLoading}
 											/>
 										</div>
 									</Form>

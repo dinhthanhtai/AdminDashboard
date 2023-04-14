@@ -31,5 +31,6 @@
     "prettier": "^2.8.7",
     "tailwindcss": "^3.3.1",
     "vite": "^2.6.4"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

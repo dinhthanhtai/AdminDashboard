@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import logo from "../assets/images/favicon.png";
@@ -10,9 +10,10 @@ import FormError from "../components/form/FormError";
 import Label from "../components/label/Label";
 import FormInput from "../components/form/FormInput";
 import GradientButton from "../components/button/GradientButton";
-import { publicFetch } from "../utils/fetch";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { useLoginMutation } from "../app/api/apiSlice";
+import { setAuthInfo } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().required("Email is required"),
@@ -20,30 +21,23 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
-	const authContext = useContext(AuthContext);
+	const dispatch = useDispatch();
+	const [login, { isError, error, isSuccess, isLoading, data }] =
+		useLoginMutation();
 
-	const [loginSuccess, setLoginSuccess] = useState();
-	const [loginError, setLoginError] = useState();
 	const [redirectOnLogin, setRedirectOnLogin] = useState(false);
-	const [loginLoading, setLoginLoading] = useState(false);
 
 	const submitCredentials = async (credentials) => {
 		try {
-			setLoginLoading(true);
-			const { data } = await publicFetch.post(`authenticate`, credentials);
+			const data = await login({ ...credentials }).unwrap();
 
-			authContext.setAuthState(data);
-			setLoginSuccess(data.message);
-			setLoginError(null);
+			dispatch(setAuthInfo(data));
 
 			setTimeout(() => {
 				setRedirectOnLogin(true);
 			}, 700);
 		} catch (error) {
-			setLoginLoading(false);
-			const { data } = error.response;
-			setLoginError(data.message);
-			setLoginSuccess(null);
+			console.log("Fail to login: ", error);
 		}
 	};
 
@@ -78,8 +72,8 @@ const Login = () => {
 							>
 								{() => (
 									<Form className='mt-8'>
-										{loginSuccess && <FormSuccess text={loginSuccess} />}
-										{loginError && <FormError text={loginError} />}
+										{isSuccess && <FormSuccess text={data?.message} />}
+										{isError && <FormError text={error?.data?.message} />}
 										<div>
 											<div className='mb-2'>
 												<div className='mb-1'>
@@ -118,7 +112,7 @@ const Login = () => {
 											<GradientButton
 												type='submit'
 												text='Log In'
-												loading={loginLoading}
+												loading={isLoading}
 											/>
 										</div>
 									</Form>
